@@ -9,7 +9,8 @@
 
 Tämän projektin tarkoituksena on toteuttaa yksinkertainen mutta työelämässä hyödyllinen automaatioskripti, joka helpottaa tietokoneen ylläpitotehtäviä.
 
-Skripti on suunniteltu ajettavaksi säännöllisesti (esim. ajastettuna) ja suorittaa useita ylläpitoon liittyviä tarkistuksia automaattisesti.
+Skripti tarkistaa levytilan, tekee varmuuskopion käyttäjän määrittelemästä kansiosta ja kirjaa kaikki tapahtumat lokitiedostoon.  
+Skripti voidaan ajaa manuaalisesti tai ajastetusti (esim. Task Schedulerilla).
 
 ---
 
@@ -23,36 +24,30 @@ Skripti on modulaarinen ja koostuu useista erillisistä tiedostoista.
 
 ---
 
-## Käytettävä tekniikka
+## Käytettävä tekniikka ja järjestelmävaatimukset
 
-- Kieli: PowerShell  
-- Käyttöjärjestelmä: Windows  
-- Skripti toimii ilman erillisiä lisäohjelmia  
-- Ajastettavissa Task Schedulerilla, mutta manuaalinen syöte kansiosta tarvitaan
-
----
-
-## Projektin rakenne
-ylläpitotyökalu/
-├── main.ps1 # Pääohjelma, joka käynnistää työkalun
-├── levytila.ps1 # Levytilan tarkistus
-├── varmuuskopio.ps1 # Varmuuskopiointi
-├── yhteinen.ps1 # Yhteiset funktiot (lokitus)
-├── lokit/
-│ └── loki.txt # Lokitiedosto tapahtumista
-
+- Kieli: PowerShell (Windows PowerShell 5.1 tai uudempi)
+- Käyttöjärjestelmä: Windows
+- Ei vaadi erillisiä asennettavia ohjelmia
+- Lokitiedosto tallennetaan automaattisesti `lokit/loki.txt`-kansioon
+- Ajastettavissa Task Schedulerilla
+- Toimii myös manuaalisesti, mutta käyttäjän syötettä tarvitaan varmuuskopioitavan kansion valintaan
 
 ---
 
-## Käyttö
+## Siirrettävyys
 
-### Manuaalinen ajo
+- Skripti voidaan siirtää toiselle Windows-koneelle suoraan, kunhan kansiorakenne säilyy  
+- Tarvittaessa `C:\naytto`-polku voidaan muuttaa, mutta lokikansiot ja skriptit pitää säilyttää samassa suhteessa  
+- PowerShellin suorittamisoikeudet tulee sallia (esim. `Set-ExecutionPolicy RemoteSigned`)
 
-1. Avaa PowerShell.
-2. Siirry skriptin kansioon:
-   powershell
-   cd C:\naytto
-3. Suorita:
-   ./main.ps1
+---
 
+## Mahdolliset kehitysideat
 
+- Skripti ei tee täydellistä virheenkäsittelyä, esimerkiksi jos kansio on lukittu tai levy täynnä  
+- Varmuuskopiointi kattaa vain yksittäisen kansion kerrallaan  
+- Ei lähetä ilmoituksia sähköpostilla  
+- Ajastettu ajo käyttää aina oletuskansiota `testikansio`, ellei skriptiä muokata
+
+---
