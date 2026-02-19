@@ -100,3 +100,11 @@ Varmuuskopiointi useammasta kansiosta kerrallaan
 Ilmoitukset sähköpostilla
 
 Ajastettu ajo voisi käyttää eri kansiota kuin oletuskansio
+
+Miten ajetaan:
+# Manuaalinen ajo, kysyy varmuuskopioitavan kansion
+.\main.ps1
+
+# Parametrisoitu ajo, ei kysy mitään
+.\main.ps1 -VarmuuskopioKansio "C:\naytto\testikansio"
+
