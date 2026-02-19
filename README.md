@@ -3,53 +3,100 @@ Ylläpitotyökalu – automaatioskripti
 Nimi: Aaron S23ÄTIV
 Kurssi: Työtehtävien automatisointi komentokielellä
 
-Projektin tarkoitus:
+Projektin tarkoitus
 
-Tämän projektin tarkoituksena on toteuttaa yksinkertainen mutta työelämässä hyödyllinen automaatioskripti, joka helpottaa tietokoneen ylläpitotehtäviä.
+Tämän projektin tarkoituksena on toteuttaa työelämälähtöinen automaatioskripti, joka helpottaa tietokoneen ylläpitotehtäviä.
+Skripti on modulaarinen, dokumentoitu ja sisältää systemaattisen virheenkäsittelyn sekä lokituksen.
 
-Skripti tarkistaa levytilan, tekee varmuuskopion käyttäjän määrittelemästä kansiosta ja kirjaa kaikki tapahtumat lokitiedostoon.
-Skripti voidaan ajaa manuaalisesti tai ajastetusti (esim. Task Schedulerilla).
+Skripti voidaan ajaa:
 
-Suunnitellut automatisoitavat tehtävät:
+Manuaalisesti PowerShell-ikkunasta
 
-Levytilan tarkistaminen (esim. C:-asema)
+Ajastettuna Task Schedulerilla
 
-Varmuuskopioinnin tekeminen annetusta kansiosta
+Toiminnot
 
-Lokitiedoston kirjoittaminen tapahtumista (lokit/loki.txt)
+Skripti suorittaa seuraavat tehtävät:
 
-TEMP-kansion puhdistus: poistaa tiedostot, jotka ovat vanhempia kuin 7 päivää
+Levytilan tarkistus
 
-Skripti on modulaarinen ja koostuu useista erillisistä tiedostoista (main.ps1, yhteinen.ps1, levytila.ps1, varmuuskopio.ps1, puhdistus.ps1)
+Tarkistaa C:-aseman vapaan tilan gigatavuina
 
-Käytettävä tekniikka ja järjestelmävaatimukset:
+Kirjaa tiedot lokiin ja raporttiin
 
-Kieli: PowerShell (Windows PowerShell 5.1 tai uudempi)
+Varmuuskopiointi
+
+Tekee varmuuskopion käyttäjän määrittelemästä kansiosta
+
+Luo aikaleimalla nimetyn backup-kansion (esim. backup_20260219_142019)
+
+Virheenkäsittely, jos kansiota ei löydy
+
+TEMP-kansion puhdistus
+
+Poistaa tiedostot, jotka ovat vanhempia kuin 7 päivää
+
+Lokittaa kaikki poistetut tiedostot ja mahdolliset virheet
+
+Lokitiedostot
+
+log.txt: kaikki tapahtumat ja virheet
+
+raportti.txt: raportointia varten
+
+Admin-tarkistus
+
+Skripti tarkistaa, onko käyttäjällä admin-oikeudet
+
+Jos oikeuksia ei ole, käyttäjää varoitetaan
+
+Skriptien rakenne
+Tiedosto	Kuvaus
+main.ps1	Pääohjelma, joka kutsuu kaikki moduulit
+yhteinen.ps1	Yhteiset funktiot: Loki(), Raportti()
+levytila.ps1	Levytilan tarkistus
+varmuuskopio.ps1	Varmuuskopiointifunktio
+puhdistus.ps1	TEMP-kansion puhdistus
+
+Tekniikka ja järjestelmävaatimukset
+
+Kieli: PowerShell (5.1 tai uudempi)
 
 Käyttöjärjestelmä: Windows
 
-Ei vaadi erillisiä asennettavia ohjelmia
+Ei vaadi erillisiä ohjelmia
 
-Lokitiedosto tallennetaan automaattisesti lokit/loki.txt-kansioon
+Lokitiedostot tallennetaan automaattisesti
 
-Ajastettavissa Task Schedulerilla
+Ajastettavissa Task Schedulerilla tai ajettavissa manuaalisesti
 
-Toimii myös manuaalisesti, mutta käyttäjän syötettä tarvitaan varmuuskopioitavan kansion valintaan
+PowerShellin suorittamisoikeudet tulee sallia (Set-ExecutionPolicy RemoteSigned)
 
-Siirrettävyys:
+Parametrisoitu käyttö
 
-Skripti voidaan siirtää toiselle Windows-koneelle suoraan, kunhan kansiorakenne säilyy
+Skripti on parametrisoitu, eikä vaadi Read-Host-syötteitä, jos haluat ajaa automaattisesti:
 
-Tarvittaessa C:\naytto-polku voidaan muuttaa, mutta lokikansiot ja skriptit pitää säilyttää samassa suhteessa
+.\main.ps1 -VarmuuskopioKansio "C:\naytto\testikansio"
 
-PowerShellin suorittamisoikeudet tulee sallia (esim. Set-ExecutionPolicy RemoteSigned)
+
+-VarmuuskopioKansio = määrittää, mikä kansio varmuuskopioidaan
+
+Jos parametri puuttuu, skripti käyttää oletuskansiota testikansio
+
+Siirrettävyys
+
+Skripti voidaan siirtää toiselle Windows-koneelle
+
+Lokikansiot ja skriptit tulee säilyttää samassa suhteessa
+
+Backup-kansiopolut voidaan muuttaa tarvittaessa
 
 Mahdolliset kehitysideat
 
-Skripti ei tee täydellistä virheenkäsittelyä, esimerkiksi jos kansio on lukittu tai levy täynnä
+Laajennettu virheenkäsittely (esim. lukittu kansio, levy täynnä)
 
-Varmuuskopiointi kattaa vain yksittäisen kansion kerrallaan
+Varmuuskopiointi useammasta kansiosta kerrallaan
 
-Ei lähetä ilmoituksia sähköpostilla
+Ilmoitukset sähköpostilla
 
-Ajastettu ajo käyttää aina oletuskansiota testikansio, ellei skriptiä muokata
+Ajastettu ajo voisi käyttää eri kansiota kuin oletuskansio
