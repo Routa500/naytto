@@ -1,48 +1,43 @@
-# varmuuskopio.ps1
-# Tämä skripti tekee varmuuskopion annetusta kansiosta
+<#
+.SYNOPSIS
+Tee varmuuskopio annetusta kansiosta.
 
-# Ladataan yhteiset funktiot
+.DESCRIPTION
+Kopioi kansion sisällön backup-hakemistoon, luo kansio tarvittaessa.
+Kirjaa lokiin ja ruudulle onnistumiset ja virheet.
+
+.NOTES
+Tekijä: Aaron S23ÄTIV
+#>
+
+# Lataa Loki()-funktio
 . .\yhteinen.ps1
 
-
-# Funktio Varmuuskopio
-# Saa parametrina kansion nimen
-function Varmuuskopio($kansio) {
-
-    # Test-Path tarkistaa löytyykö tiedosto tai kansio
-    # ! tarkoittaa EI (negatiivinen ehto)
-    # !(Test-Path ...) = kansiota EI ole olemassa
-    if (!(Test-Path $kansio)) {
-
-        # Jos kansio puuttuu, kirjataan virhe
-        Loki "Virhe: kansiota ei loydy ($kansio)"
-
-        # Write-Host tulostaa viestin ruudulle
-        Write-Host "Kansiota ei loydy: $kansio" -ForegroundColor Red
-
-        # return lopettaa funktion suorittamisen
-        return
+function Varmuuskopio($Kansio) {
+    # Tarkista, löytyykö annettu kansio
+    if (-not (Test-Path $Kansio)) {
+        Loki "Annettua kansiota ei löydy: $Kansio"
+        Write-Host "Annettua kansiota ei löydy: $Kansio" -ForegroundColor Red
+        throw "Annettua kansiota ei löydy: $Kansio"
     }
 
-    # Yritetään varmuuskopiointia
     try {
+        # Luo backup-polku aikaleimalla
+        $BackupPolku = "C:\naytto\varmuuskopiot\backup_" + (Get-Date -Format "yyyyMMdd_HHmmss")
+        # Luo hakemisto, jos sitä ei ole
+        if (-not (Test-Path $BackupPolku)) { New-Item -ItemType Directory -Path $BackupPolku | Out-Null }
 
-        # Copy-Item kopioi tiedostoja ja kansioita
-        # -Recurse = kopioi myos alikansiot
-        # -Force = sallii paallekirjoituksen
-        Copy-Item $kansio "backup\" -Recurse -Force
+        # Kopioi kansio backup-polkuun
+        # -Recurse: myös alikansiot
+        # -Force: päällekirjoitus sallittu
+        Copy-Item $Kansio $BackupPolku -Recurse -Force
 
-        # Onnistuminen kirjataan lokiin
-        Loki "Varmuuskopio tehty kansiosta: $kansio"
-
-        # Tulostetaan onnistuminen ruudulle
-        Write-Host "Varmuuskopiointi onnistui: $kansio" -ForegroundColor Green
-    }
-    catch {
-        # Jos virhe tapahtuu, se kirjataan lokiin
-        Loki "Virhe: varmuuskopiointi epaonnistui"
-
-        # Tulostetaan virhe ruudulle
-        Write-Host "Varmuuskopiointi epaonnistui" -ForegroundColor Red
+        # Onnistuminen lokiin ja ruudulle
+        Loki "Varmuuskopiointi onnistui: $Kansio -> $BackupPolku"
+        Write-Host "Varmuuskopiointi onnistui: $Kansio -> $BackupPolku" -ForegroundColor Green
+    } catch {
+        # Virheenkäsittely
+        Loki "Virhe varmuuskopioinnissa: $_"
+        Write-Host "Varmuuskopiointi epäonnistui: $Kansio" -ForegroundColor Red
     }
 }

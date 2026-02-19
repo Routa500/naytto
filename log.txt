@@ -1,0 +1,6 @@
+2026-02-19 14.43.21 - === Skripti kaynnistyi ===
+2026-02-19 14.43.21 - Levytila tarkistettu: Vapaana 73.1 GB
+2026-02-19 14.43.21 - Varmuuskopiointi onnistui: C:\naytto\testikansio -> C:\naytto\varmuuskopiot\backup_20260219_144321
+2026-02-19 14.43.21 - Temp-kansion puhdistus alkaa. Polku: C:\Users\routa\AppData\Local\Temp
+2026-02-19 14.43.21 - Temp-kansiossa ei ollut poistettavia tiedostoja.
+2026-02-19 14.43.21 - === Skripti valmis ===
